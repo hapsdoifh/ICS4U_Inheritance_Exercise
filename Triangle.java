@@ -10,10 +10,10 @@ public class Triangle {
     
     //Getters Setters
     public double getSide(int which){
-        return sides[which];
+        return sides[which-1];
     }
     public double getAngle(int which){
-        return angles[which];
+        return angles[which-1];
     }
     public void setSide(int which, double value){
         sides[which] = value;
@@ -28,15 +28,15 @@ public class Triangle {
     public double findParam(double[] sides){
         return sides[0]+sides[1]+sides[2];
     }
-    public double FindSide(int side){
-
+    public double findSide(int side){
+        side--;
         int wS = side;
         //sin law
         if(angles[side] != 0){
             for(int i = 0; i<2; i++){
-                wS = (wS+1)>3?3-wS:wS;
+                wS = (wS+1)>2?2-wS:wS+1;
                 if(angles[wS] !=0 && sides[wS] !=0){
-                    return angles[side] * sides[wS]/angles[wS];
+                    return Math.sin(angles[side]) * sides[wS]/Math.sin(angles[wS]);
                 }
             }
         }
@@ -46,7 +46,28 @@ public class Triangle {
         if(angles[side] != 0 && sides[tempA] !=0 && sides[tempB] !=0){ //checks to see if the other two sides are not 0\
             return Math.sqrt(Math.pow(sides[tempA], 2) + Math.pow(sides[tempA],2) - 2*sides[tempA]*sides[tempB]*Math.cos(angles[side]));
         }
-        
-        return 0;
+        return -1;
+    }
+
+    public double findAngle(int angle){
+        angle--;
+        int wA = angle;
+        //sin law
+        if(sides[angle] != 0){
+            for(int i = 0; i<2; i++){
+                wA = (wA+1)>3?3-wA:wA;
+                if(sides[wA] !=0 && angles[wA] !=0){
+                    return Math.asin(sides[angle] * Math.sin(angles[wA])/sides[wA]);
+                }
+            }
+        }
+        //cosine Law
+        int tempA = (angle+1)>3?3-angle:angle;
+        int tempB = (angle+2)>3?3-angle:angle;
+        if(sides[angle] != 0 && sides[tempA] !=0 && sides[tempB] !=0){ //checks to see if the other two sides are not 0\
+            //return Math.sqrt(Math.pow(sides[tempA], 2) + Math.pow(sides[tempA],2) - 2*sides[tempA]*sides[tempB]*Math.cos(angles[side]));
+            return Math.acos((Math.pow(sides[tempA],2)+Math.pow(sides[tempB], 2)-Math.pow(sides[angle],2))/(2*sides[tempA]*sides[tempB]));
+        }
+        return -1;
     }
 }
